@@ -490,8 +490,10 @@ border-radius: 4px;
 .btn-heal:disabled { border-color: #444; color: #444; cursor: not-allowed; }
 .btn-swap { border-color: var(--gold); color: var(--gold); }
 .btn-swap:disabled { border-color: #444; color: #444; cursor: not-allowed; }
+.btn-revive { border-color: #ff88ff; color: #ff88ff; }
+.btn-revive:disabled { border-color: #444; color: #444; cursor: not-allowed; }
 
-/* ── Team slot on select screen ── */
+/* -- Team slot on select screen -- */
 #team-slots { min-height: 52px; }
 .team-slot-pick {
 width: 42px; height: 42px;
@@ -512,7 +514,7 @@ font-size: 8px; line-height: 14px; text-align: center;
 color: white; cursor: pointer;
 }
 
-/* ── Team bar in battle ── */
+/* -- Team bar in battle -- */
 #team-bar {
 display: flex; gap: 4px;
 padding: 3px 10px 4px;
@@ -537,7 +539,7 @@ background: rgba(255,255,255,0.1); border-radius: 2px; overflow: hidden;
 }
 .team-hp-mini-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
 
-/* ── Swap panel ── */
+/* -- Swap panel -- */
 #swap-panel {
 position: absolute; inset: 0;
 background: rgba(5,5,20,0.97);
@@ -761,7 +763,7 @@ flex-shrink: 0;
 
   <div id="title-screen" class="screen active">
     <div class="stars" id="stars"></div>
-    <div class="subtitle">── 像素世界 ──</div>
+    <div class="subtitle">-- 像素世界 --</div>
     <div class="game-title">✦ 小精靈<br>冒險傳說 ✦</div>
     <div class="sprite-showcase">
       <div class="sprite-preview"><?xml version="1.0"?>
@@ -864,7 +866,6 @@ flex-shrink: 0;
       </div>
     </div>
 
-```
 <div class="battle-arena" id="battle-arena">
   <div class="arena-ground"></div>
   <div class="battle-sprite enemy" id="enemy-sprite"></div>
@@ -884,13 +885,13 @@ flex-shrink: 0;
 <div class="battle-actions">
   <button class="btn-sm btn-heal" id="heal-btn" onclick="usePotion()">🧪 補血 <span id="potion-count">5</span></button>
   <button class="btn-sm btn-swap" id="swap-btn" onclick="openSwapPanel()">🔄 換人</button>
+  <button class="btn-sm btn-revive" id="revive-btn" onclick="useRevive()">💊 復活 <span id="revive-count">2</span></button>
   <button class="btn-sm btn-run" onclick="tryRun()">逃跑</button>
 </div>
 <!-- Team bar -->
 <div id="team-bar"></div>
 <!-- Swap panel (hidden by default) -->
 <div id="swap-panel" style="display:none;"></div>
-```
 
   </div>
 
@@ -1071,7 +1072,7 @@ const SPRITE_DATA = [
       { name: '冰凍衝撞', type: 'normal', power: 50, pp: 20, maxPp: 20, emoji: '💎' },
     ]
   },
-  // ── NEW SPRITES ────────────────────────────
+  // -- NEW SPRITES ----------------------------
   {
     id: 6, name: '岩石巨人', type: 'rock',
     baseHp: 100, baseAtk: 60, baseDef: 90, baseSpd: 30,
@@ -1747,9 +1748,9 @@ const SPRITE_DATA = [
     ]
   },
 
-  // ══════════════════════════════
-  // EVOLVED FORMS (id 30--39)
-  // ══════════════════════════════
+  // ==============================
+  // EVOLVED FORMS (id 30-39)
+  // ==============================
   {
     id: 30, name: '炎皇巨龍', type: 'fire',
     baseHp: 110, baseAtk: 100, baseDef: 75, baseSpd: 90,
@@ -2080,7 +2081,7 @@ const SPRITE_DATA = [
     ]
   },
 
-  // ══ NEW BASE SPRITES (id 40--49) ══
+  // == NEW BASE SPRITES (id 40-49) ==
   {
     id: 40, name: '熔岩蜥蜴', type: 'fire',
     baseHp: 65, baseAtk: 58, baseDef: 45, baseSpd: 60,
@@ -2344,7 +2345,7 @@ const SPRITE_DATA = [
     ]
   },
 
-  // ══ NEW EVOLVED FORMS (id 50--54) ══
+  // == NEW EVOLVED FORMS (id 50-54) ==
   {
     id: 50, name: '炎爆暴龍', type: 'fire',
     baseHp: 100, baseAtk: 98, baseDef: 72, baseSpd: 88,
@@ -2493,7 +2494,7 @@ const SPRITE_DATA = [
     ]
   },
 
-  // ══ BATCH 3 BASE SPRITES (id 55--66) ══
+  // == BATCH 3 BASE SPRITES (id 55-66) ==
   {
     id: 55, name: '小火馬', type: 'fire',
     baseHp: 66, baseAtk: 60, baseDef: 44, baseSpd: 74,
@@ -2812,7 +2813,7 @@ const SPRITE_DATA = [
     ]
   },
 
-  // ══ BATCH 3 EVOLVED FORMS (id 67--74) ══
+  // == BATCH 3 EVOLVED FORMS (id 67-74) ==
   {
     id: 67, name: '烈焰天馬', type: 'fire',
     baseHp: 102, baseAtk: 98, baseDef: 68, baseSpd: 108,
@@ -2951,7 +2952,7 @@ const SPRITE_DATA = [
       { name: '迅雷萬影步', type: 'dark', power: 85, pp: 12, maxPp: 12, emoji: '💫' },
     ]
   },
-  // ── 新精靈 id 72--83 ──
+  // -- 新精靈 id 72-83 --
   {
     id: 72, name: '小火狐', type: 'fire',
     baseHp: 68, baseAtk: 68, baseDef: 42, baseSpd: 80,
@@ -3179,7 +3180,7 @@ const SPRITE_DATA = [
       { name: '翼擊', type: 'flying', power: 60, pp: 20, maxPp: 20, emoji: '🌬️' },
     ]
   },
-  // ── 進化形態 id 80--83 ──
+  // -- 進化形態 id 80-83 --
   {
     id: 80, name: '九尾烈焰狐', type: 'fire',
     baseHp: 100, baseAtk: 105, baseDef: 68, baseSpd: 115,
@@ -3237,7 +3238,7 @@ const SPRITE_DATA = [
 </svg>`,
     moves: [
       { name: '海龍怒浪', type: 'water', power: 105, pp: 10, maxPp: 10, emoji: '🌊' },
-      { name: '霸王水砲', type: 'water', power: 120, pp: 8, maxPd: 8, maxPp: 8, emoji: '💦' },
+      { name: '霸王水砲', type: 'water', power: 120, pp: 8, maxPp: 8, emoji: '💦' },
       { name: '龍潮席捲', type: 'dragon', power: 90, pp: 10, maxPp: 10, emoji: '🐉' },
       { name: '深海毀滅波', type: 'water', power: 135, pp: 5, maxPp: 5, emoji: '🌀' },
     ]
@@ -3351,6 +3352,7 @@ let state = {
   playerLevel: 1,
   isBusy: false,
   potions: 5,
+  revives: 2,
   pendingSwap: false, // true when swap is forced (active fainted)
 };
 
@@ -3494,6 +3496,7 @@ function confirmSelect() {
   state.wins = 0;
   state.wave = 1;
   state.potions = 5;
+  state.revives = 2;
 
   // Build team
   state.team = chosen.map(id => {
@@ -3517,6 +3520,8 @@ function createCombatant(sp, level) {
     def: Math.round(sp.baseDef * hpMult),
     spd: Math.round(sp.baseSpd * hpMult),
     moves: sp.moves.map(m => ({ ...m })),
+    xp: 0,
+    xpToLevel: 100,
   };
 }
 
@@ -3565,7 +3570,8 @@ function renderBattle() {
 
   document.getElementById('win-count').textContent = state.wins;
   document.getElementById('wave-count').textContent = state.wave;
-  document.getElementById('player-level').textContent = state.playerLevel;
+  state.playerLevel = state.player.level;
+  document.getElementById('player-level').textContent = state.player.level;
 
   // Enemy info
   document.getElementById('enemy-name').textContent = e.name;
@@ -3574,7 +3580,7 @@ function renderBattle() {
 
   // Player info
   document.getElementById('player-name').textContent = p.name;
-  document.getElementById('player-level-info').textContent = `Lv.${state.playerLevel}`;
+  document.getElementById('player-level-info').textContent = 'Lv.' + state.player.level;
   updateHpBar('player', p.hp, p.maxHp);
 
   // Sprites
@@ -3587,6 +3593,7 @@ function renderBattle() {
   // Moves
   renderMoves();
   updatePotionBtn();
+  updateReviveBtn();
   renderTeamBar();
   updateSwapBtn();
 }
@@ -3600,9 +3607,12 @@ function updateHpBar(who, hp, maxHp) {
 }
 
 function updateXpBar() {
-  const pct = Math.round(state.xp / state.xpToLevel * 100);
+  const m = state.player;
+  const xp = m.xp || 0;
+  const xpToLevel = m.xpToLevel || 100;
+  const pct = Math.round(xp / xpToLevel * 100);
   document.getElementById('xp-bar').style.width = pct + '%';
-  document.getElementById('xp-text').textContent = `${state.xp} / ${state.xpToLevel}`;
+  document.getElementById('xp-text').textContent = `${xp} / ${xpToLevel}`;
 }
 
 function renderMoves() {
@@ -3746,52 +3756,128 @@ async function handleVictory() {
   const xpGain = Math.round(20 + state.wave * 8 + state.enemy.level * 5);
   state.wins++;
   state.wave++;
-  
-  setLog(`${state.enemy.name} 倒下了！獲得 ${xpGain} 經驗值！`);
+
+  setLog(`${state.enemy.name} 倒下了！全隊獲得 ${xpGain} 經驗值！`);
   await wait(600);
 
-  state.xp += xpGain;
-  let leveledUp = false;
-  while (state.xp >= state.xpToLevel) {
-    state.xp -= state.xpToLevel;
-    state.playerLevel++;
-    state.xpToLevel = Math.round(state.xpToLevel * 1.3);
-    leveledUp = true;
-    levelUpPlayer();
-  }
-  updateXpBar();
-  document.getElementById('player-level').textContent = state.playerLevel;
+  // Give XP to all team members, level each one up independently
+  let anyLevelUp = false;
+  let evolutions = []; // collect evolutions to play after
 
-  if (leveledUp) {
-    // Check evolution before showing level up
-    const evolveId = checkEvolution();
-    if (evolveId !== null) {
-      await triggerEvolution(evolveId);
+  for (let i = 0; i < state.team.length; i++) {
+    const m = state.team[i];
+    if (!m.xp) m.xp = 0;
+    if (!m.xpToLevel) m.xpToLevel = 100;
+
+    m.xp += xpGain;
+    while (m.xp >= m.xpToLevel) {
+      m.xp -= m.xpToLevel;
+      m.level++;
+      m.xpToLevel = Math.round(m.xpToLevel * 1.3);
+      anyLevelUp = true;
+      levelUpMember(m);
+
+      // Check evolution
+      const sp = SPRITE_DATA[m.id];
+      if (sp.evolvesTo !== undefined && m.level >= sp.evolveLevel) {
+        evolutions.push({ memberIdx: i, evolvedId: sp.evolvesTo });
+      }
+    }
+  }
+
+  // state.playerLevel mirrors active member's level for display
+  state.playerLevel = state.player.level;
+  updateXpBar();
+  document.getElementById('player-level').textContent = state.player.level;
+
+  if (anyLevelUp) {
+    if (evolutions.length > 0) {
+      for (const ev of evolutions) {
+        await triggerEvolutionForMember(ev.memberIdx, ev.evolvedId);
+      }
     } else {
       showLevelUp();
       await wait(1500);
     }
   }
 
-  // Show result
-  showResultScreen(true, xpGain, leveledUp);
+  showResultScreen(true, xpGain, anyLevelUp);
 }
 
-function levelUpPlayer() {
-  const sp = SPRITE_DATA[state.player.id];
-  const mul = 1 + (state.playerLevel - 1) * 0.1;
-  state.player.maxHp = Math.round(sp.baseHp * mul);
-  state.player.hp = Math.min(state.player.hp + Math.round(sp.baseHp * 0.1), state.player.maxHp);
-  state.player.atk = Math.round(sp.baseAtk * mul);
-  state.player.def = Math.round(sp.baseDef * mul);
+function levelUpMember(m) {
+  const sp = SPRITE_DATA[m.id];
+  const mul = 1 + (m.level - 1) * 0.1;
+  m.maxHp = Math.round(sp.baseHp * mul);
+  m.hp = Math.min(m.hp + Math.round(sp.baseHp * 0.1), m.maxHp);
+  m.atk = Math.round(sp.baseAtk * mul);
+  m.def = Math.round(sp.baseDef * mul);
 }
+
+// Legacy alias used by triggerEvolution
+function levelUpPlayer() { levelUpMember(state.player); }
 
 function checkEvolution() {
   const sp = SPRITE_DATA[state.player.id];
-  if (sp.evolvesTo !== undefined && state.playerLevel >= sp.evolveLevel) {
+  if (sp.evolvesTo !== undefined && state.player.level >= sp.evolveLevel) {
     return sp.evolvesTo;
   }
   return null;
+}
+
+// Evolve a specific team member by index
+async function triggerEvolutionForMember(memberIdx, evolvedId) {
+  const isActive = (memberIdx === state.activeIdx);
+  const oldMember = state.team[memberIdx];
+  const oldSp = SPRITE_DATA[oldMember.id];
+  const newSp = SPRITE_DATA[evolvedId];
+  const wrapper = document.getElementById('game-wrapper');
+
+  const overlay = document.createElement('div');
+  overlay.className = 'evolve-overlay';
+  const spriteContainer = document.createElement('div');
+  spriteContainer.style.cssText = 'position:relative;width:100px;height:100px;display:flex;align-items:center;justify-content:center;';
+  const before = document.createElement('div');
+  before.className = 'evolve-sprite-before';
+  before.innerHTML = oldSp.svg.replace('width="64" height="64"', 'width="90" height="90"');
+  const after = document.createElement('div');
+  after.className = 'evolve-sprite-after';
+  after.innerHTML = newSp.svg.replace('width="64" height="64"', 'width="90" height="90"');
+  spriteContainer.appendChild(before);
+  spriteContainer.appendChild(after);
+  const txt = document.createElement('div');
+  txt.className = 'evolve-text';
+  txt.textContent = `✦ 進化！ ✦\n${oldSp.name}\n↓\n${newSp.name}`;
+  overlay.appendChild(spriteContainer);
+  overlay.appendChild(txt);
+  wrapper.appendChild(overlay);
+  await wait(3200);
+  overlay.remove();
+
+  // Apply evolution
+  const hpRatio = oldMember.hp / oldMember.maxHp;
+  const mul = 1 + (oldMember.level - 1) * 0.1;
+  const evolved = {
+    ...newSp,
+    level: oldMember.level,
+    xp: oldMember.xp,
+    xpToLevel: oldMember.xpToLevel,
+    maxHp: Math.round(newSp.baseHp * mul),
+    hp: 0,
+    atk: Math.round(newSp.baseAtk * mul),
+    def: Math.round(newSp.baseDef * mul),
+    spd: Math.round(newSp.baseSpd * mul),
+    moves: newSp.moves.map(mv => ({ ...mv })),
+  };
+  evolved.hp = Math.max(1, Math.round(evolved.maxHp * hpRatio));
+  state.team[memberIdx] = evolved;
+  if (isActive) {
+    state.player = evolved;
+    document.getElementById('player-sprite').innerHTML = newSp.svg.replace('width="64" height="64"', 'width="72" height="72"');
+    document.getElementById('player-name').textContent = newSp.name;
+    updateHpBar('player', evolved.hp, evolved.maxHp);
+    renderMoves();
+  }
+  renderTeamBar();
 }
 
 async function triggerEvolution(evolvedId) {
@@ -3890,14 +3976,17 @@ function nextBattle() {
     state.wins = 0;
     state.wave = 1;
     state.potions = 5;
+    state.revives = 2;
     state.team.forEach(m => {
       const sp = SPRITE_DATA[m.id];
-      const mul = 1 + (state.playerLevel - 1) * 0.1;
-      m.hp = m.maxHp = Math.round(sp.baseHp * mul);
+      m.level = 1; m.xp = 0; m.xpToLevel = 100;
+      m.hp = m.maxHp = Math.round(sp.baseHp * 1);
+      m.atk = sp.baseAtk; m.def = sp.baseDef; m.spd = sp.baseSpd;
       m.moves = sp.moves.map(mv => ({ ...mv }));
     });
     state.activeIdx = 0;
     state.player = state.team[0];
+    state.playerLevel = 1;
   }
   startBattle();
 }
@@ -3915,6 +4004,7 @@ function renderTeamBar() {
     const barColor = pct > 50 ? 'var(--green)' : pct > 20 ? 'var(--gold)' : 'var(--red)';
     el.innerHTML =
       m.svg.replace('width="64" height="64"', 'width="26" height="26"') +
+      `<div style="font-size:0.3rem;color:#aaa;line-height:1">Lv.${m.level}</div>` +
       '<div class="team-hp-mini"><div class="team-hp-mini-fill" style="width:' + pct + '%;background:' + barColor + '"></div></div>';
     bar.appendChild(el);
   });
@@ -3947,7 +4037,7 @@ function openSwapPanel(forced) {
       m.svg.replace('width="64" height="64"', 'width="36" height="36"') +
       '<div class="swap-card-info">' +
       '<div class="swap-card-name">' + m.name + (i === state.activeIdx ? ' （出戰中）' : '') + '</div>' +
-      '<div class="swap-card-hp">HP: ' + Math.max(0, m.hp) + ' / ' + m.maxHp + (m.hp <= 0 ? '  💀' : '') + '</div>' +
+      '<div class="swap-card-hp">Lv.' + m.level + '　HP: ' + Math.max(0, m.hp) + ' / ' + m.maxHp + (m.hp <= 0 ? '  💀' : '') + '</div>' +
       '<div class="swap-hp-bar"><div class="swap-hp-fill" style=\"width:' + pct + '%;background:' + barColor + '\"></div></div>' +
       '</div>';
     if (i !== state.activeIdx && m.hp > 0) {
@@ -3975,12 +4065,13 @@ async function swapTo(idx, forced) {
   document.getElementById('player-sprite').innerHTML =
     state.player.svg.replace('width="64" height="64"', 'width="72" height="72"');
   document.getElementById('player-name').textContent = state.player.name;
-  document.getElementById('player-level-info').textContent = 'Lv.' + state.playerLevel;
+  document.getElementById('player-level-info').textContent = 'Lv.' + state.player.level;
   updateHpBar('player', state.player.hp, state.player.maxHp);
   renderMoves();
   renderTeamBar();
   updateSwapBtn();
   updatePotionBtn();
+  updateReviveBtn();
   setLog('換上 ' + state.player.name + '！加油！');
   if (forced) {
     state.pendingSwap = false;
@@ -3997,6 +4088,7 @@ async function swapTo(idx, forced) {
   state.isBusy = false;
   updateSwapBtn();
   updatePotionBtn();
+  updateReviveBtn();
 }
 
 function updatePotionBtn() {
@@ -4005,6 +4097,59 @@ function updatePotionBtn() {
   if (!btn) return;
   cnt.textContent = state.potions;
   btn.disabled = state.potions <= 0 || state.isBusy;
+}
+
+function updateReviveBtn() {
+  const btn = document.getElementById('revive-btn');
+  const cnt = document.getElementById('revive-count');
+  if (!btn) return;
+  cnt.textContent = state.revives;
+  const hasFainted = state.team && state.team.some(m => m.hp <= 0);
+  btn.disabled = state.revives <= 0 || state.isBusy || !hasFainted;
+}
+
+async function useRevive() {
+  if (state.isBusy || state.revives <= 0) return;
+  const fainted = state.team.filter(m => m.hp <= 0);
+  if (fainted.length === 0) return;
+
+  state.isBusy = true;
+  state.revives--;
+
+  // Revive up to 2 fainted members at 50% HP
+  const toRevive = fainted.slice(0, 2);
+  const names = [];
+  toRevive.forEach(m => {
+    m.hp = Math.round(m.maxHp * 0.5);
+    names.push(m.name);
+  });
+
+  setLog(`💊 復活了 ${names.join('、')}！各回復 50% HP！`);
+  renderTeamBar();
+  updateReviveBtn();
+  updateSwapBtn();
+
+  // Flash effect
+  const wrapper = document.getElementById('game-wrapper');
+  const flash = document.createElement('div');
+  flash.style.cssText = 'position:absolute;inset:0;background:rgba(255,136,255,0.25);z-index:50;pointer-events:none;animation:crit-flash-anim 0.5s forwards;';
+  wrapper.appendChild(flash);
+  setTimeout(() => flash.remove(), 500);
+
+  await wait(800);
+
+  // Enemy gets a free turn
+  await enemyTurn();
+
+  if (state.player.hp <= 0) {
+    await handleDefeat();
+    return;
+  }
+
+  state.isBusy = false;
+  updateReviveBtn();
+  updatePotionBtn();
+  updateSwapBtn();
 }
 
 async function usePotion() {
@@ -4120,10 +4265,12 @@ function showLevelUp() {
   const wrapper = document.getElementById('game-wrapper');
   const overlay = document.createElement('div');
   overlay.className = 'levelup-overlay';
-  overlay.innerHTML = `<div class="levelup-text">LEVEL UP!\nLv.${state.playerLevel}</div>`;
+  // Show level info for all team members
+  const lines = state.team.map(m => `${m.name} Lv.${m.level}`).join('\n');
+  overlay.innerHTML = `<div class="levelup-text">LEVEL UP!\n${lines}</div>`;
   overlay.querySelector('.levelup-text').style.whiteSpace = 'pre';
   wrapper.appendChild(overlay);
-  setTimeout(() => overlay.remove(), 1600);
+  setTimeout(() => overlay.remove(), 2000);
 }
 
 function shakeEl(el) {
